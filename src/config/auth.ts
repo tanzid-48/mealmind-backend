@@ -23,4 +23,14 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 7,
   },
+  advanced: {
+    // Frontend (vercel.app) and backend (onrender.com) are different domains,
+    // not subdomains of the same root — cookies used during the OAuth redirect
+    // (like the state cookie) need SameSite=None + Secure to survive that
+    // cross-site round trip. Without this, Google login fails with state_mismatch.
+    defaultCookieAttributes: {
+      sameSite: "none",
+      secure: true,
+    },
+  },
 });
