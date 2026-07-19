@@ -14,13 +14,12 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
-  // Google social login gets added here after deployment:
-  // socialProviders: {
-  //   google: {
-  //     clientId: process.env.GOOGLE_CLIENT_ID as string,
-  //     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-  //   },
-  // },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    },
+  },
   session: {
     expiresIn: 60 * 60 * 24 * 7,
   },
