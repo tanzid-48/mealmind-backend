@@ -24,9 +24,26 @@ const PORT = process.env.PORT || 5000;
 // (needed for the cross-domain OAuth state cookie) never get set correctly.
 app.set("trust proxy", 1);
 
+// Vercel gives every deployment its own unique preview URL
+// (mealmind-frontend-<hash>-<team>.vercel.app), not just the stable production
+// domain. A static origin string would block those, so check dynamically:
+// allow the configured CLIENT_URL exactly, plus any *.vercel.app subdomain.
+const isAllowedOrigin = (origin?: string): boolean => {
+  if (!origin) return true; // same-origin / non-browser requests (e.g. curl, health checks)
+  if (origin === process.env.CLIENT_URL) return true;
+  if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) return true;
+  return false;
+};
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS blocked for origin: ${origin}`));
+      }
+    },
     credentials: true,
   })
 );
