@@ -19,6 +19,11 @@ import { errorHandler, notFound } from "./middleware/errorHandler";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Render (and most PaaS hosts) sit behind a reverse proxy that terminates TLS.
+// Without this, Express thinks every request is plain HTTP, so Secure cookies
+// (needed for the cross-domain OAuth state cookie) never get set correctly.
+app.set("trust proxy", 1);
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
