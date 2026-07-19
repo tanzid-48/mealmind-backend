@@ -23,6 +23,9 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 7,
   },
+  account: {
+    skipStateCookieCheck: true,
+  },
   advanced: {
     // Frontend (vercel.app) and backend (onrender.com) are different domains,
     // not subdomains of the same root — cookies used during the OAuth redirect
@@ -31,6 +34,9 @@ export const auth = betterAuth({
     defaultCookieAttributes: {
       sameSite: "none",
       secure: true,
+    },
+    ipAddress: {
+      ipAddressHeaders: ["x-forwarded-for"],
     },
   },
 });
