@@ -12,7 +12,7 @@ export const auth = betterAuth({
   trustedOrigins: [process.env.CLIENT_URL as string, "https://*.vercel.app"],
   emailAndPassword: {
     enabled: true,
-    autoSignIn: true,
+    autoSignIn: false,
   },
   socialProviders: {
     google: {
